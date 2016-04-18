@@ -23,67 +23,76 @@ import java.io.IOException;
 
 public class Cataloguer{
     
+    //creating objects
     JFrame window;
     JPanel buttons, textFields; 
-    JLabel first, second, third, fourth, fifth;
-    JTextField textOne, textTwo, textThree, textFour, textFive;
+    JLabel title, publisher, condition, issPub, issOwn;
+    JTextField fieldOne, fieldTwo, fieldThree, fieldFour, fieldFive;
     JButton save, clear;
   
     
     
     
    Cataloguer(){
+       
+       //assigning info to variables
        window = new JFrame("Cataloguer");
        buttons = new JPanel();
        textFields = new JPanel();
-       first = new JLabel("Title");
-       second = new JLabel("Publisher");
-       third = new JLabel("Condition");
-       fourth = new JLabel("Issues Published");
-       fifth = new JLabel("Issues Owned");
-       textOne = new JTextField("");
-       textTwo = new JTextField("");
-       textThree = new JTextField("");
-       textFour = new JTextField("");
-       textFive = new JTextField("");
+       title = new JLabel("Title");
+       publisher = new JLabel("Publisher");
+       condition = new JLabel("Condition");
+       issPub = new JLabel("Issues Published");
+       issOwn = new JLabel("Issues Owned");
+       fieldOne = new JTextField("");
+       fieldTwo = new JTextField("");
+       fieldThree = new JTextField("");
+       fieldFour = new JTextField("");
+       fieldFive = new JTextField("");
        save = new JButton("Save");
        clear = new JButton("Clear");
        
+       //setting layout of text fields
        textFields.setLayout(new BoxLayout(textFields, BoxLayout.PAGE_AXIS));
        buttons.setLayout(new FlowLayout());
        
-       textFields.add(first);
-       textFields.add(textOne);
-       textFields.add(second);
-       textFields.add(textTwo);
-       textFields.add(third);
-       textFields.add(textThree);
-       textFields.add(fourth);
-       textFields.add(textFour);
-       textFields.add(fifth);
-       textFields.add(textFive);
+       //assembling the jlabels and text fields in order
+       textFields.add(title);
+       textFields.add(fieldOne);
+       textFields.add(publisher);
+       textFields.add(fieldTwo);
+       textFields.add(condition);
+       textFields.add(fieldThree);
+       textFields.add(issPub);
+       textFields.add(fieldFour);
+       textFields.add(issOwn);
+       textFields.add(fieldFive);
        
        buttons.add(save);
        
        //adding action listener to the save button, which performs the saction of saving all the text stored in the textFields and saves them to a txt file
        save.addActionListener(new ActionListener(){
            public void actionPerformed(ActionEvent e){
-             String txtOne = textOne.getText();
-             String txtTwo = textTwo.getText();
-             String txtThree = textThree.getText();
-             String txtFour = textFour.getText();
-             String txtFive = textFive.getText();
+             String txtOne = fieldOne.getText();
+             String txtTwo = fieldTwo.getText();
+             String txtThree = fieldThree.getText();
+             String txtFour = fieldFour.getText();
+             String txtFive = fieldFive.getText();
              
              try{
+                 //Opening file and setting it to append on a new line
                  FileWriter fw = new FileWriter("catalogue.txt", true);
+                 //adding a new line before writing text to file
                  fw.write("\r\n");
-                 fw.write("NAME: "+txtOne+".");
-                 fw.write("PUBLISHER: "+txtTwo+".");
-                 fw.write("CONDITION: "+txtThree+".");
-                 fw.write("NO OF ISSUES: "+txtFour+".");
+                 //writing all data entered into text field to file
+                 fw.write("NAME: "+txtOne+" ");
+                 fw.write("PUBLISHER: "+txtTwo+" ");
+                 fw.write("CONDITION: "+txtThree+" ");
+                 fw.write("NO OF ISSUES: "+txtFour+" ");
                  fw.write("ISSUES OWNED: "+txtFive);
+                 //closing file
                  fw.close();
-             }catch(IOException error){
+            }catch(IOException error){
                  System.out.println("error");
              }
              
@@ -93,9 +102,10 @@ public class Cataloguer{
        
        
        buttons.add(clear);
-       
+       //adding action listener to the clear button, so it can erase and reset all data typed into text field
        clear.addActionListener(new ActionListener(){
            public void actionPerformed(ActionEvent e){
+               //reseting all text fields to empty and clearing all data entered out 
                textOne.setText("");
                textTwo.setText("");
                textThree.setText("");
@@ -104,6 +114,7 @@ public class Cataloguer{
            }           
        });
        
+       //adjusting window layout
        window.add(textFields, BorderLayout.PAGE_START);
        window.add(buttons, BorderLayout.PAGE_END);
        
