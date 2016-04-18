@@ -20,7 +20,6 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 
-
 public class Cataloguer{
     
     //creating objects
@@ -29,9 +28,6 @@ public class Cataloguer{
     JLabel title, publisher, condition, issPub, issOwn;
     JTextField fieldOne, fieldTwo, fieldThree, fieldFour, fieldFive;
     JButton save, clear;
-  
-    
-    
     
    Cataloguer(){
        
@@ -99,8 +95,6 @@ public class Cataloguer{
            }
        });
        
-       
-       
        buttons.add(clear);
        //adding action listener to the clear button, so it can erase and reset all data typed into text field
        clear.addActionListener(new ActionListener(){
@@ -124,7 +118,6 @@ public class Cataloguer{
        window.setResizable(true);     
       
    }
-   
    
    public static void main(String args[]){
        new Cataloguer();
