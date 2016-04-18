@@ -107,11 +107,11 @@ public class Cataloguer{
        clear.addActionListener(new ActionListener(){
            public void actionPerformed(ActionEvent e){
                //reseting all text fields to empty and clearing all data entered out 
-               textOne.setText("");
-               textTwo.setText("");
-               textThree.setText("");
-               textFour.setText("");
-               textFive.setText("");
+               fieldOne.setText("");
+               fieldTwo.setText("");
+               fieldThree.setText("");
+               fieldFour.setText("");
+               fieldFive.setText("");
            }           
        });
        
