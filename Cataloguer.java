@@ -34,6 +34,7 @@ public class Cataloguer{
        
        //assigning info to variables
        window = new JFrame("Cataloguer");
+       window.setPreferredSize(new Dimension(400, 270));
        buttons = new JPanel();
        textFields = new JPanel();
        title = new JLabel("Title");
