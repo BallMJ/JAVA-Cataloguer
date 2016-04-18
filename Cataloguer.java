@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class Cataloguer{
     
@@ -64,6 +65,9 @@ public class Cataloguer{
        textFields.add(issOwn);
        textFields.add(fieldFive);
        
+       //Creating a Dialog box to ask for the user to type the filename they want to store their catalogue in 
+       String inputFileName = JOptionPane.showInputDialog(null, "Please type your catalogue filename");
+       
        buttons.add(save);
        
        //adding action listener to the save button, which performs the saction of saving all the text stored in the textFields and saves them to a txt file
@@ -77,24 +81,27 @@ public class Cataloguer{
              
              try{
                  //Opening file and setting it to append on a new line
-                 FileWriter fw = new FileWriter("catalogue.txt", true);
-                 //adding a new line before writing text to file
-                 fw.write("\r\n");
-                 //writing all data entered into text field to file
-                 fw.write("NAME: "+txtOne+" ");
-                 fw.write("PUBLISHER: "+txtTwo+" ");
-                 fw.write("CONDITION: "+txtThree+" ");
-                 fw.write("NO OF ISSUES: "+txtFour+" ");
-                 fw.write("ISSUES OWNED: "+txtFive);
-                 //closing file
-                 fw.close();
+                 //applying dialog box inputFileName value to the filename
+                 FileWriter fw = new FileWriter(inputFileName+".txt", true);
+                 while(true){
+                    //adding a new line before writing text to file
+                    fw.write("\r\n");
+                    //writing all data entered into text field to file
+                    fw.write("NAME: "+txtOne+" ");
+                    fw.write("PUBLISHER: "+txtTwo+" ");
+                    fw.write("CONDITION: "+txtThree+" ");
+                    fw.write("NO OF ISSUES: "+txtFour+" ");
+                    fw.write("ISSUES OWNED: "+txtFive);
+                    //closing file
+                    fw.close();
+                 }
             }catch(IOException error){
-                 System.out.println("error");
+                 System.out.println("Error - file could not be opened");
              }
              
            }
        });
-       
+       //adding button 'clear'
        buttons.add(clear);
        //adding action listener to the clear button, so it can erase and reset all data typed into text field
        clear.addActionListener(new ActionListener(){
