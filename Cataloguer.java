@@ -40,7 +40,7 @@ public class Cataloguer {
     JMenuItem newTab, openTab, helpTab;
     FileWriter fw;
     //String x takes the name of the file created in the 'File menu' to then be used by the save button, so it can periodically save when needed by the user
-    String x, t;
+    String x, t, write;
 
     Cataloguer() {
 
@@ -119,11 +119,13 @@ public class Cataloguer {
         window.setResizable(true);
 
     }
-    //adding Action listener to the new tab under FILE > NEW
+
     public void newTabAction() {
         newTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Creating a Dialog box to ask for the user to type the filename they want to store their catalogue in 
+                //String t = JOptionPane.showInputDialog(null, "Please type your catalogue filename");
                 JFileChooser choose = new JFileChooser();
                 int p = choose.showSaveDialog(null);
                 if (p == JFileChooser.APPROVE_OPTION) {
@@ -132,22 +134,48 @@ public class Cataloguer {
                     x = filename.getText();
                     t = dir.getText();
                     System.out.println(x);
+                    System.out.println(t);
                 }
                 if (p == JFileChooser.CANCEL_OPTION) {
                     filename.setText("cancel");
                     dir.setText("");
                 }
+
+                if (x.contains(".txt")) {
+                    write = t + "\\" + x;
+                    System.out.println(write);
+                    try {
+                        FileWriter fw = new FileWriter(t + "\\" + x, true);
+                        //assigning the filename created of t to x so x can be used outside of the public void block and used in the save button
+                        //x = t;
+                        System.out.println(x);
+
+                    } catch (IOException exception) {
+                        System.out.println(x);
+                        System.out.println(exception);
+                    }
+                } else {
+                    write = t + "\\" + x + ".txt";
+                    System.out.println(write);
+                    try {
+                        FileWriter fw = new FileWriter(t + "\\" + x + ".txt", true);
+                    } catch (IOException exception) {
+                        System.out.println(exception);
+                    }
+
+                }
+
             }
         });
     }
-    
-    //adding Action listener to the open tab under FILE > OPEN
+
+    //adding Action listener to the new tab under FILE > NEW
     public void openTabAction() {
         openTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                /*Very similar code to the 'newTabAction' above except here we use the 'showOpenDialog',
-                * rather than the 'showSaveDialog'*/
+                //Creating a Dialog box to ask for the user to type the filename they want to store their catalogue in 
+                //String t = JOptionPane.showInputDialog(null, "Please type your catalogue filename");
                 JFileChooser choose = new JFileChooser();
                 int p = choose.showOpenDialog(null);
                 if (p == JFileChooser.APPROVE_OPTION) {
@@ -156,10 +184,35 @@ public class Cataloguer {
                     x = filename.getText();
                     t = dir.getText();
                     System.out.println(x);
+                    System.out.println(t);
                 }
                 if (p == JFileChooser.CANCEL_OPTION) {
                     filename.setText("cancel");
                     dir.setText("");
+                }
+
+                if (x.contains(".txt")) {
+                    write = t + "\\" + x;
+                    System.out.println(write);
+                    try {
+                        FileWriter fw = new FileWriter(t + "\\" + x, true);
+                        //assigning the filename created of t to x so x can be used outside of the public void block and used in the save button
+                        //x = t;
+                        System.out.println(x);
+
+                    } catch (IOException exception) {
+                        System.out.println(x);
+                        System.out.println(exception);
+                    }
+                } else {
+                    write = t + "\\" + x + ".txt";
+                    System.out.println(write);
+                    try {
+                        FileWriter fw = new FileWriter(t + "\\" + x + ".txt", true);
+                    } catch (IOException exception) {
+                        System.out.println(exception);
+                    }
+
                 }
             }
         });
@@ -197,59 +250,30 @@ public class Cataloguer {
 
                 //Opening file and setting it to append on a new line
                 //applying dialog box inputFileName value to the filename
-                
-                //checking if the file name contains '.txt', if it does then we wont append it to the end of the filename
-                if (x.contains(".txt")) {
+                try {
+                    FileWriter fw = new FileWriter(write, true);
+                    System.out.println(fw);
 
-                    try {
-                        FileWriter fw = new FileWriter(t + "\\" + x, true);
-                        System.out.println(fw);
+                    while (true) {
 
-                        while (true) {
-
-                            //adding a new line before writing text to file
-                            fw.write("\r\n");
-                            //writing all data entered into text field to file
-                            fw.write("NAME: " + txtOne + " ");
-                            fw.write("PUBLISHER: " + txtTwo + " ");
-                            fw.write("CONDITION: " + txtThree + " ");
-                            fw.write("NO OF ISSUES: " + txtFour + " ");
-                            fw.write("ISSUES OWNED: " + txtFive);
-                            //closing file
-                            fw.close();
-                        }
-                    } catch (IOException error) {
-                        System.out.println(x);
-                        System.out.println(error);
+                        //adding a new line before writing text to file
+                        fw.write("\r\n");
+                        //writing all data entered into text field to file
+                        fw.write("NAME: " + txtOne + " ");
+                        fw.write("PUBLISHER: " + txtTwo + " ");
+                        fw.write("CONDITION: " + txtThree + " ");
+                        fw.write("NO OF ISSUES: " + txtFour + " ");
+                        fw.write("ISSUES OWNED: " + txtFive);
+                        //closing file
+                        fw.close();
                     }
-                } else {
-                    String write = x + ".txt";
-
-                    try {
-                        //Writing the new file to the correct directory using the correct filename
-                        FileWriter fw = new FileWriter(t + "\\" + write, true);
-                        System.out.println(write);
-                        while (true) {
-                            //adding a new line before writing text to file
-                            fw.write("\r\n");
-                            //writing all data entered into text field to file
-                            fw.write("NAME: " + txtOne + " ");
-                            fw.write("PUBLISHER: " + txtTwo + " ");
-                            fw.write("CONDITION: " + txtThree + " ");
-                            fw.write("NO OF ISSUES: " + txtFour + " ");
-                            fw.write("ISSUES OWNED: " + txtFive);
-                            //closing file
-                            fw.close();
-                        }
-
-                    } catch (IOException error) {
-                        System.out.println(write);
-                        System.out.println(error);
-
-                    }
-
+                } catch (IOException error) {
+                    System.out.println(x);
+                    System.out.println(error);
                 }
+
             }
+
         });
     }
 
@@ -272,6 +296,7 @@ public class Cataloguer {
 
     public static void main(String args[]) {
         new Cataloguer();
+        System.out.println("\\");
     }
 
 }
