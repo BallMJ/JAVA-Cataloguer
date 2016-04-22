@@ -4,4 +4,6 @@ Usage - Just fill in all the fields from 'Name', all the way through to 'Issues 
 
 This is just my first installment, as I will be upgrading it's features daily
 
--Update 23/04/2016 - Added a File menu with a 'New' tab to create a new txt file, which also links with the Save button so each entry can be added to the created and specified file. Also added a 'Help' tab for a brief instructions on how to use the software.
+-Update 21/04/2016 - Added a File menu with a 'New' tab to create a new txt file, which also links with the Save button so each entry can be added to the created and specified file. Also added a 'Help' tab for a brief instructions on how to use the software.
+
+-Update 22/04/2016 - Created both 'Open' and 'New' functionality inside the File menu. Applied code to both 'New' and 'Open' which presents the user with a folder/file viewer for them to navigate and save or open the specified catalogue file in a path of their choosing. Reworked the 'Save' button functionality, which writes to the specified file on the specified path. 'Save' button also checks if the '.txt' notation has been added to the end of the filename, if not the this will be added automatically.
