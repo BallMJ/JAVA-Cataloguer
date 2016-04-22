@@ -1,4 +1,3 @@
-package Cataloguer;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Graphics;
@@ -25,6 +24,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.KeyEvent;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import javax.swing.JFileChooser;
 
 public class Cataloguer {
 
@@ -32,12 +35,12 @@ public class Cataloguer {
     JFrame window;
     JPanel buttons, textFields;
     JLabel title, publisher, condition, issPub, issOwn;
-    JTextField fieldOne, fieldTwo, fieldThree, fieldFour, fieldFive;
+    JTextField fieldOne, fieldTwo, fieldThree, fieldFour, fieldFive, filename, dir;
     JButton save, clear;
-    JMenuItem newTab, helpTab;
+    JMenuItem newTab, openTab, helpTab;
     FileWriter fw;
     //String x takes the name of the file created in the 'File menu' to then be used by the save button, so it can periodically save when needed by the user
-    String x;
+    String x, t;
 
     Cataloguer() {
 
@@ -52,8 +55,10 @@ public class Cataloguer {
 
         //Creating and adding the drop down tabs of the JMenuBar
         newTab = new JMenuItem("New", KeyEvent.VK_N);
+        openTab = new JMenuItem("Open", KeyEvent.VK_N);
         helpTab = new JMenuItem("Help", KeyEvent.VK_N);
         fileMenu.add(newTab);
+        fileMenu.add(openTab);
         fileMenu.add(helpTab);
 
         window.setJMenuBar(menu);
@@ -72,6 +77,8 @@ public class Cataloguer {
         fieldThree = new JTextField("");
         fieldFour = new JTextField("");
         fieldFive = new JTextField("");
+        filename = new JTextField("");
+        dir = new JTextField("");
         save = new JButton("Save");
         clear = new JButton("Clear");
 
@@ -90,11 +97,14 @@ public class Cataloguer {
         textFields.add(fieldFour);
         textFields.add(issOwn);
         textFields.add(fieldFive);
+        //textFields.add(filename);
+        //textFields.add(dir);
 
         buttons.add(save);
 
         //importing the objects and their ActionListeners for the buttons and tabs 
         newTabAction();
+        openTabAction();
         helpTabAction();
         saveButton();
         clearButton();
@@ -109,23 +119,47 @@ public class Cataloguer {
         window.setResizable(true);
 
     }
-
     //adding Action listener to the new tab under FILE > NEW
     public void newTabAction() {
         newTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //Creating a Dialog box to ask for the user to type the filename they want to store their catalogue in 
-                String t = JOptionPane.showInputDialog(null, "Please type your catalogue filename");
 
-                try {
-                    FileWriter fw = new FileWriter(t + ".txt", true);
-                    //assigning the filename created of t to x so x can be used outside of the public void block and used in the save button
-                    x = t;
+                JFileChooser choose = new JFileChooser();
+                int p = choose.showSaveDialog(null);
+                if (p == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(choose.getSelectedFile().getName());
+                    dir.setText(choose.getCurrentDirectory().toString());
+                    x = filename.getText();
+                    t = dir.getText();
                     System.out.println(x);
+                }
+                if (p == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("cancel");
+                    dir.setText("");
+                }
+            }
+        });
+    }
+    
+    //adding Action listener to the open tab under FILE > OPEN
+    public void openTabAction() {
+        openTab.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-                } catch (IOException exception) {
+                /*Very similar code to the 'newTabAction' above except here we use the 'showOpenDialog',
+                * rather than the 'showSaveDialog'*/
+                JFileChooser choose = new JFileChooser();
+                int p = choose.showOpenDialog(null);
+                if (p == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(choose.getSelectedFile().getName());
+                    dir.setText(choose.getCurrentDirectory().toString());
+                    x = filename.getText();
+                    t = dir.getText();
                     System.out.println(x);
-                    System.out.println(exception);
+                }
+                if (p == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("cancel");
+                    dir.setText("");
                 }
             }
         });
@@ -161,26 +195,59 @@ public class Cataloguer {
                 String txtFour = fieldFour.getText();
                 String txtFive = fieldFive.getText();
 
-                try {
-                    //Opening file and setting it to append on a new line
-                    //applying dialog box inputFileName value to the filename
-                    FileWriter fw = new FileWriter(x + ".txt", true);
-                    while (true) {
+                //Opening file and setting it to append on a new line
+                //applying dialog box inputFileName value to the filename
+                
+                //checking if the file name contains '.txt', if it does then we wont append it to the end of the filename
+                if (x.contains(".txt")) {
 
-                        //adding a new line before writing text to file
-                        fw.write("\r\n");
-                        //writing all data entered into text field to file
-                        fw.write("NAME: " + txtOne + " ");
-                        fw.write("PUBLISHER: " + txtTwo + " ");
-                        fw.write("CONDITION: " + txtThree + " ");
-                        fw.write("NO OF ISSUES: " + txtFour + " ");
-                        fw.write("ISSUES OWNED: " + txtFive);
-                        //closing file
-                        fw.close();
+                    try {
+                        FileWriter fw = new FileWriter(t + "\\" + x, true);
+                        System.out.println(fw);
+
+                        while (true) {
+
+                            //adding a new line before writing text to file
+                            fw.write("\r\n");
+                            //writing all data entered into text field to file
+                            fw.write("NAME: " + txtOne + " ");
+                            fw.write("PUBLISHER: " + txtTwo + " ");
+                            fw.write("CONDITION: " + txtThree + " ");
+                            fw.write("NO OF ISSUES: " + txtFour + " ");
+                            fw.write("ISSUES OWNED: " + txtFive);
+                            //closing file
+                            fw.close();
+                        }
+                    } catch (IOException error) {
+                        System.out.println(x);
+                        System.out.println(error);
                     }
-                } catch (IOException error) {
-                    System.out.println(x);
-                    System.out.println(error);
+                } else {
+                    String write = x + ".txt";
+
+                    try {
+                        //Writing the new file to the correct directory using the correct filename
+                        FileWriter fw = new FileWriter(t + "\\" + write, true);
+                        System.out.println(write);
+                        while (true) {
+                            //adding a new line before writing text to file
+                            fw.write("\r\n");
+                            //writing all data entered into text field to file
+                            fw.write("NAME: " + txtOne + " ");
+                            fw.write("PUBLISHER: " + txtTwo + " ");
+                            fw.write("CONDITION: " + txtThree + " ");
+                            fw.write("NO OF ISSUES: " + txtFour + " ");
+                            fw.write("ISSUES OWNED: " + txtFive);
+                            //closing file
+                            fw.close();
+                        }
+
+                    } catch (IOException error) {
+                        System.out.println(write);
+                        System.out.println(error);
+
+                    }
+
                 }
             }
         });
